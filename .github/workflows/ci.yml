@@ -1,45 +1,27 @@
-name: CI
+name: Pull Request Unit Tests
 
 on:
   pull_request:
     branches:
-      - Assignment1
+      - main
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
 
-    services:
-      mysql:
-        image: mysql:8.0
-        env:
-          MYSQL_ROOT_PASSWORD: root
-          MYSQL_DATABASE: testdb
-        ports:
-          - 3306:3306
-        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
-
-      postgres:
-        image: postgres:13
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: testdb
-        ports:
-          - 5432:5432
-        options: --health-cmd="pg_isready" --health-interval=10s --health-timeout=5s --health-retries=3
-
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
-
-    - name: Set up Node.js
-      uses: actions/setup-node@v3
+    - uses: actions/checkout@v2
+    - name: Use Node.js
+      uses: actions/setup-node@v2
       with:
-        node-version: '14'
-
+        node-version: 14
     - name: Install dependencies
-      run: npm install
-
-    - name: Run integration tests
-      run: npm test
+      run: |
+        npm install express mysql bcrypt body-parser jest supertest dotenv portfinder nodemon sequelize sequelize-cli postgres path fs winston
+        npm i --save express-validator
+    - name: Run unit tests
+      run: |
+        npm test
+    - name: Health check test
+      run: |
+        npm test healthcheck.test.js
