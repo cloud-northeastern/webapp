@@ -43,7 +43,9 @@ source "amazon-ebs" "debian" {
   ami_users       = ["842863456401"]
 
   ami_regions = [
-    "us-east-1",]
+    "us-east-1",
+  ]
+
 
   aws_polling {
 
