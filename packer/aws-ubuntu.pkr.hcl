@@ -7,6 +7,13 @@ packer {
   }
 }
 
+
+variable "db_root_password" {
+  type      = string
+  sensitive = true
+}
+
+
 variable "aws_region" {
 
   type    = string
@@ -69,14 +76,43 @@ source "amazon-ebs" "debian" {
 
 }
 build {
-  name = "debian-12-ami"
   sources = [
-    "source.amazon-ebs.debian"
+    "source.amazon-ebs.debian_base"
   ]
 
   provisioner "shell" {
-    script = "./install.sh"
+    inline = [
+    sudo apt update
+    sudo apt upgrade
+    sudo apt install -y nodejs npm
+    sudo apt-get install unzip
+    sudo apt install -y postgresql
+    sudo systemctl enable postgresql
+    sudo systemctl start postgresql
+      "echo -e '\\n\\N\\nY\\n${var.db_root_password}\\n${var.db_root_password}\\nN\\nN\\nN\\nY\\n'"
+    ]
   }
 
+  provisioner "file" {
+    source      = "/home/runner/work/webapp/webapp/repository.zip"
+    destination = "~/"
+  }
 
+  provisioner "shell" {
+    inline = [
+      "unzip ~/repository.zip -d ~/webapp",
+      "cd ~/webapp && npm install",
+    ]
+  }
+
+  provisioner "file" {
+    source      = "/home/runner/work/webapp/webapp/.env"
+    destination = "~/webapp/.env"
+  }
+
+  provisioner "shell" {
+    inline = [
+      "sudo apt-get purge -y git"
+    ]
+  }
 }
