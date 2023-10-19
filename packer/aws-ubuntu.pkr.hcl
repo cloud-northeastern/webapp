@@ -20,10 +20,10 @@ locals {
 
 
 source "amazon-ebs" "ubuntu" {
-  ami_name      = "ami-${local.timestamp}"
+  ami_name        = "ami-${local.timestamp}"
   ami_description = "Assignment 5"
-  instance_type = "t2.micro"
-  region        = "us-east-1"
+  instance_type   = "t2.micro"
+  region          = "us-east-1"
   ami_users       = ["842863456401"]
 
   source_ami_filter {
@@ -35,7 +35,7 @@ source "amazon-ebs" "ubuntu" {
     }
     most_recent = true
     owners      = ["aws-marketplace"]
-    
+
   }
   ssh_username = "admin"
 }
