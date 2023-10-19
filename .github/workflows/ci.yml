@@ -69,10 +69,10 @@ jobs:
 
         - name: Packer init
           run: |
-            packer init packer/debian.pkr.hcl
+            packer init packer/aws-ubuntu.pkr.hcl
 
         - name: Validate Packer Config
           run: |
             cd packer
-            packer fmt --check debian.pkr.hcl
+            packer fmt --check aws-ubuntu.pkr.hcl
             packer validate -var "db_root_password=${DB_ROOT_PASSWORD}" debian.pkr.hcl
