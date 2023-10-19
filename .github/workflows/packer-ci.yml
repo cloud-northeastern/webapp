@@ -41,14 +41,9 @@ jobs:
         run: |
           packer init packer/aws-ubuntu.pkr.hcl
 
+      - name: Run packer fmt
+        run: packer fmt -check -recursive .
 
-      - name: Setup Packer
-        uses: hashicorp/setup-packer@main
-        id: setup
-        with:
-          version: "latest"
+      - name: Run packer validate
+        run: packer validate .
 
-      - name: Build Packer Image
-        run: |
-          cd packer
-          packer build -var "db_root_password=${DB_ROOT_PASSWORD}" debian.pkr.hcl
