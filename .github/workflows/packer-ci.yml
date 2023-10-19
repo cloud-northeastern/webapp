@@ -41,6 +41,7 @@ jobs:
         run: |
           packer init packer/aws-ubuntu.pkr.hcl
 
+
       - name: Setup Packer
         uses: hashicorp/setup-packer@main
         id: setup
