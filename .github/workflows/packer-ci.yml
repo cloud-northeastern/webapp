@@ -6,7 +6,6 @@ on:
       - main
 
 jobs:
-  packer_ci:
     build-and-deploy:
       runs-on: ubuntu-latest
 
