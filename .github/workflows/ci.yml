@@ -7,7 +7,7 @@ on:
 
 jobs:
   integration:
-    build:
+    
       runs-on: ubuntu-latest
 
       services:
