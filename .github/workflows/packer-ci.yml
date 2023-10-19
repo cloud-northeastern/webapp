@@ -39,7 +39,8 @@ jobs:
 
       - name: Packer init
         run: |
-          packer init packer/debian.pkr.hcl
+          packer init packer/aws-ubuntu.pkr.hcl
+
 
       - name: Setup Packer
         uses: hashicorp/setup-packer@main
