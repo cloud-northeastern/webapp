@@ -1,33 +1,53 @@
-name: Packer CI
+name: Push to Main Workflow
 
 on:
-  pull_request:
-    paths:
-      - '../../packer/aws-ubuntu.pkr.hcl'
-      - '../../packer/install.sh'
+  push:
+    branches:
+      - main
 
 jobs:
-  packer-ci:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      DB_ROOT_PASSWORD: ${{ secrets.DB_ROOT_PASSWORD }}
+
     steps:
-      - name: Checkout Repository
+      - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 14
-
-      - name: Install Packer
+      - name: Create .env file
         run: |
-          wget https://releases.hashicorp.com/packer/1.7.7/packer_1.7.7_linux_amd64.zip
-          unzip packer_1.7.7_linux_amd64.zip
-          sudo mv packer /usr/local/bin/
+          echo DB_HOST=127.0.0.1 >> .env
+          echo DB_USER=root >> .env
+          echo DB_DIALECT=mysql >> .env
+          echo DB_PASSWORD=${{ secrets.DB_ROOT_PASSWORD }} >> .env
+          echo DB_NAME=mysql >> .env
+          echo TEST_DB_NAME=assignment_portal >> .env
 
-      - name: Run packer fmt
-        run: packer fmt -check -recursive .
+      - name: Create Zip Artifact
+        run: |
+          zip -r repository.zip .
 
-      - name: Run packer validate
-        run: packer validate .
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: repository
+          path: repository.zip . -x "*.git*"
 
+      - name: Packer init
+        run: |
+          packer init packer/debian.pkr.hcl
+
+      - name: Setup Packer
+        uses: hashicorp/setup-packer@main
+        id: setup
+        with:
+          version: "latest"
+
+      - name: Build Packer Image
+        run: |
+          cd packer
+          packer build -var "db_root_password=${DB_ROOT_PASSWORD}" debian.pkr.hcl
