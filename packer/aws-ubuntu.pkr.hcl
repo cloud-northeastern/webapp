@@ -1,4 +1,5 @@
 packer {
+  required_version = ">= 1.7"
   required_plugins {
     amazon = {
       version = ">= 1.0.0"
@@ -13,101 +14,50 @@ variable "db_root_password" {
   sensitive = true
 }
 
-
-variable "aws_region" {
-
-  type    = string
-  default = "us-east-1"
-
+locals {
+  timestamp = regex_replace(timestamp(), "[- TZ:]", "")
 }
 
 
-variable "source_ami" {
-
-  type    = string
-  default = "ami-06db4d78cb1d3bbf9"
-
-}
-
-variable "ssh_username" {
-
-  type    = string
-  default = "admin"
-
-}
-
-variable "subnet_id" {
-
-  type    = string
-  default = "subnet-035a2d0dc478b4987"
-
-}
-
-source "amazon-ebs" "debian" {
-  ami_name        = "debian-12-ami"
-  region          = "${var.aws_region}"
-  ami_description = "AMI for CSYE 6225"
+source "amazon-ebs" "ubuntu" {
+  ami_name      = "ami-${local.timestamp}"
+  ami_description = "Assignment 5"
+  instance_type = "t2.micro"
+  region        = "us-east-1"
   ami_users       = ["842863456401"]
 
-  ami_regions = [
-    "us-east-1",
-  ]
-
-  aws_polling {
-
-    delay_seconds = 120
-    max_attempts  = 50
-
+  source_ami_filter {
+    filters = {
+      name                = "debian-12-*"
+      root-device-type    = "ebs"
+      virtualization-type = "hvm"
+      architecture        = "x86_64"
+    }
+    most_recent = true
+    owners      = ["aws-marketplace"]
+    
   }
-
-
-  instance_type = "t2.micro"
-  source_ami    = "${var.source_ami}"
-  ssh_username  = "${var.ssh_username}"
-  subnet_id     = "${var.subnet_id}"
-
-
-  launch_block_device_mappings {
-    delete_on_termination = true
-    device_name           = "/dev/xvda"
-    volume_size           = 8
-    volume_type           = "gp2"
-  }
-
+  ssh_username = "admin"
 }
+
 build {
   sources = [
-    "source.amazon-ebs.debian_base"
+    "source.amazon-ebs.ubuntu"
   ]
 
   provisioner "shell" {
     inline = [
-    sudo apt update
-    sudo apt upgrade
-    sudo apt install -y nodejs npm
-    sudo apt-get install unzip
-    sudo apt install -y postgresql
-    sudo systemctl enable postgresql
-    sudo systemctl start postgresql
-      "echo -e '\\n\\N\\nY\\n${var.db_root_password}\\n${var.db_root_password}\\nN\\nN\\nN\\nY\\n'"
+      "sudo apt update",
+      "sudo apt upgrade",
+      "sudo apt install -y nodejs npm",
+      "sudo apt-get install unzip",
+      "sudo apt install -y postgresql",
+      "sudo systemctl enable postgresql",
+      "sudo systemctl start postgresql",
+      "sudo -u postgres psql -c \"ALTER USER postgres WITH PASSWORD '${var.db_root_password}';\"",
+      "sudo sed -i 's/#listen_addresses = 'localhost'/listen_addresses = '*'/g' /etc/postgresql/15/main/postgresql.conf",
+      "sudo systemctl restart postgresql"
     ]
-  }
-
-  provisioner "file" {
-    source      = "/home/runner/work/webapp/webapp/repository.zip"
-    destination = "~/"
-  }
-
-  provisioner "shell" {
-    inline = [
-      "unzip ~/repository.zip -d ~/webapp",
-      "cd ~/webapp && npm install",
-    ]
-  }
-
-  provisioner "file" {
-    source      = "/home/runner/work/webapp/webapp/.env"
-    destination = "~/webapp/.env"
   }
 
   provisioner "shell" {
@@ -116,3 +66,4 @@ build {
     ]
   }
 }
+
