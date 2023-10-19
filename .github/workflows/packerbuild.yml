@@ -1,4 +1,4 @@
-name: Push to Main Workflow
+name: Buid packer Workflow
 
 on:
   pull_request:
@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  build-and-deploy:
+  build-packer:
     runs-on: ubuntu-latest
 
     env:
