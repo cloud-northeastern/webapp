@@ -36,7 +36,7 @@ source "amazon-ebs" "ubuntu" {
     most_recent = true
     owners      = ["aws-marketplace"]
 
-  
+  }
   ssh_username = "admin"
 }
 
