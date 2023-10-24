@@ -10,7 +10,7 @@ packer {
 
 
 variable "db_root_password" {
-type      = string
+  type      = string
   sensitive = true
 }
 
@@ -36,7 +36,7 @@ source "amazon-ebs" "ubuntu" {
     most_recent = true
     owners      = ["aws-marketplace"]
 
-  }
+  
   ssh_username = "admin"
 }
 
