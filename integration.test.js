@@ -6,7 +6,7 @@ process.env.DB_HOST = 'localhost';
 process.env.DB_USERNAME = 'aakashrajawat';
 process.env.DB_PASSWORD = 'aakashrajawat';
 process.env.DB_NAME = 'cloud';
-process.env.DB_PORT = '5000';
+process.env.DB_PORT = '8080';
 
 
 describe('Integration Tests', () => {
