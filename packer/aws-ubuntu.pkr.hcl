@@ -49,7 +49,7 @@ build {
     inline = [
       "sudo apt update",
       "sudo apt upgrade -y",
-      "sudo apt install -y nodejs npm nodemon",
+      "sudo apt install -y nodejs npm",
       "sudo apt-get install unzip",
       "sudo apt install -y postgresql",
       "sudo systemctl enable postgresql",
