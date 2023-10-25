@@ -48,8 +48,8 @@ build {
   provisioner "shell" {
     inline = [
       "sudo apt update",
-      "sudo apt upgrade",
-      "sudo apt install -y nodejs npm",
+      "sudo apt upgrade -y",
+      "sudo apt install -y nodejs npm nodemon",
       "sudo apt-get install unzip",
       "sudo apt install -y postgresql",
       "sudo systemctl enable postgresql",
@@ -65,5 +65,29 @@ build {
       "sudo apt-get purge -y git"
     ]
   }
+
+    provisioner "file" {
+    source      = "/home/runner/work/webapp/webapp/repository.zip"
+    destination = "~/"
+  }
+
+  provisioner "shell" {
+    inline = [
+      "unzip ~/repository.zip -d ~/webapp",
+      "cd ~/webapp && npm install",
+    ]
+  }
+
+  provisioner "file" {
+    source      = "/home/runner/work/webapp/webapp/.env"
+    destination = "~/webapp/.env"
+  }
+
+  provisioner "shell" {
+    inline = [
+      "sudo apt-get purge -y git"
+    ]
+  }
+
 }
 
