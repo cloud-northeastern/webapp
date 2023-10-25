@@ -16,12 +16,12 @@ jobs:
             POSTGRES_ROOT_PASSWORD: ${{ secrets.DB_ROOT_PASSWORD }}
             POSTGRES_DATABASE: webapp
           ports:
-            - 3306:3306
+            - 5432:5432
           
 
       env:
         DB_HOST: localhost
-        DB_PORT: 3306
+        DB_PORT: 5432
         DB_USER: root
         DB_DIALECT: postgres
         DB_PASSWORD: ${{ secrets.DB_ROOT_PASSWORD }}
