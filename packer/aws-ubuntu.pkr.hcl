@@ -66,7 +66,7 @@ build {
     ]
   }
 
-    provisioner "file" {
+  provisioner "file" {
     source      = "/home/runner/work/webapp/webapp/repository.zip"
     destination = "~/"
   }
