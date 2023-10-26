@@ -68,7 +68,7 @@ build {
   }
 
   provisioner "file" {
-    source      = "packer/webapp.service"
+    source      = "../webapp.service"
     destination = "/tmp/webapp.service"
   }
 
