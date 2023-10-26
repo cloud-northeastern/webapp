@@ -9,16 +9,15 @@ packer {
 }
 
 
-variable "region" {}
-variable "source_ami_name" {}
-variable "instance_type" {}
-variable "ssh_username" {}
-variable "ami_users" {}
-variable "ami_description" {}
-variable "root_device_type" {}
-variable "virtualization_type" {}
-variable "architecture" {}
-
+variable "region" { default = "us-east-1" }
+variable "source_ami_name" { default = "debian-12-*" }
+variable "instance_type" { default = "t2.micro" }
+variable "ssh_username" { default = "admin" }
+variable "ami_users" { default = "842863456401" }
+variable "ami_description" { default = "Webapp" }
+variable "root_device_type" { default = "ebs" }
+variable "virtualization_type" { default = "hvm" }
+variable "architecture" { default = "x86_64" }
 
 locals {
   timestamp = regex_replace(timestamp(), "[- TZ:]", "")
@@ -63,7 +62,6 @@ build {
   provisioner "file" {
     source      = "/home/runner/work/webapp/webapp/repository.zip"
     destination = "~/repository.zip"
-
   }
 
   provisioner "file" {
@@ -79,8 +77,9 @@ build {
       "sudo useradd -s /bin/bash -G prodGroup prod",
       "sudo chown -R prod:prodGroup /opt/webapp",
       "cd /opt/webapp",
-      "sudo chmod g+x server.js",
+      "sudo chmod g+x index.js",
       "sudo npm install",
+      "sudo npm install -y -g express nodemon",
       "sudo systemctl enable webapp",
       "sudo systemctl start webapp",
     ]
@@ -93,30 +92,4 @@ build {
   }
 }
 
-variables file
 
-region           = "us-east-1"
-source_ami_name  = "debian-12-*"
-instance_type    = "t2.micro"
-ssh_username     = "admin"
-ami_users        = "842863456401"
-ami_description  = "Webapp"
-root_device_type    = "ebs"
-virtualization_type = "hvm"
-architecture        = "x86_64"
-
-service code
-
-[Unit]
-Description=Web App
-After=network.target
-
-[Service]
-User=prod
-Group=prodGroup
-WorkingDirectory=/opt/webapp
-ExecStart=/usr/bin/node /opt/webapp/index.js   
-Restart=always
-
-[Install]
-WantedBy=multi-user.target
