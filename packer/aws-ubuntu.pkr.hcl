@@ -46,7 +46,7 @@ source "amazon-ebs" "debian_base" {
 }
 
 build {
-  name = "my-ami"
+  name = "webapp-ami"
   sources = [
     "source.amazon-ebs.debian_base"
   ]

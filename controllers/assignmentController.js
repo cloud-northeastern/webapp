@@ -7,7 +7,7 @@ const basicAuth = require('basic-auth');
 
 exports.createAssignment = async (req, res) => {
     try {
-      const { title, description, points } = req.body;
+      const { name, description, points,num_of_attemps } = req.body;
       const userEmail = basicAuth(req).name;
   
       // Find the user by email
@@ -22,10 +22,11 @@ exports.createAssignment = async (req, res) => {
       }
   
       const assignment = await Assignment.create({
-        title,
+        name,
         description,
         points,
         UserId: user.id,
+        num_of_attemps
       });
   
       res.status(201).json(assignment);
@@ -38,7 +39,7 @@ exports.createAssignment = async (req, res) => {
   exports.updateAssignment = async (req, res) => {
     try {
       const { id } = req.params;
-      const { title, description, points } = req.body;
+      const { name, description, points,num_of_attemps } = req.body;
   
       const user = req.user; // Use the authenticated user from the request
   
@@ -51,10 +52,11 @@ exports.createAssignment = async (req, res) => {
   
       const [updatedRowsCount, updatedAssignments] = await Assignment.update(
         {
-          title,
+          name,
           description,
           points,
           UserId: user.id,
+          num_of_attemps
         },
         {
           where: {
