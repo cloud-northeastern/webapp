@@ -75,4 +75,4 @@ jobs:
           run: |
             cd packer
             packer fmt --check aws-ubuntu.pkr.hcl
-            packer validate aws-ubuntu.pkr.hcl
+            packer validate -var "db_root_password=${DB_ROOT_PASSWORD}" aws-ubuntu.pkr.hcl
