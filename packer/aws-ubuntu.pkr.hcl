@@ -67,10 +67,10 @@ build {
     destination = "~/repository.zip"
   }
 
-  // provisioner "file" {
-  //   source      = "webapp.service"
-  //   destination = "/tmp/webapp.service"
-  // }
+  provisioner "file" {
+    source      = "../webapp.service"
+    destination = "/tmp/webapp.service"
+  }
 
   provisioner "shell" {
     inline = [
