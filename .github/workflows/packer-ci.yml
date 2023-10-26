@@ -44,6 +44,7 @@ jobs:
         - name: Run packer fmt
           run: packer fmt -check -recursive .
 
-        - name: Run packer validate
-          run: packer validate -var "db_root_password=${DB_ROOT_PASSWORD}" packer/aws-ubuntu.pkr.hcl
-
+        - name: Validate Packer Config
+          run: |
+            cd packer
+            packer validate -var "db_root_password=${DB_ROOT_PASSWORD}" aws-ubuntu.pkr.hcl
