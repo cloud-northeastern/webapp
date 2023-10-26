@@ -7,7 +7,7 @@ const sequelize = new Sequelize({
   host: 'localhost',
   username: 'aakashrajawat',
   password: 'aakashrajawat',
-  database: 'cloud',
+  database: 'csye6225',
   port: 8080,
 });
 

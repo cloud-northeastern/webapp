@@ -9,7 +9,7 @@ const Assignment = sequelize.define('Assignment', {
     primaryKey: true,
     allowNull: false,
   },
-  title: {
+  name: {
     type: DataTypes.STRING,
     allowNull: false,
   },
@@ -22,8 +22,20 @@ const Assignment = sequelize.define('Assignment', {
     validate: {
       min: 1,
       max: 10,
-    },
   },
+    
+  },
+
+  num_of_attemps: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    validate: {
+      min: 1,
+      max: 10,
+  },
+    
+  },
+
   assignment_created: {
     type: DataTypes.DATE,
     defaultValue: DataTypes.NOW,
