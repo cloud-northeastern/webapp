@@ -8,7 +8,10 @@ packer {
   }
 }
 
-
+variable "db_root_password" {
+  type      = string
+  sensitive = true
+}
 variable "region" { default = "us-east-1" }
 variable "source_ami_name" { default = "debian-12-*" }
 variable "instance_type" { default = "t2.micro" }
