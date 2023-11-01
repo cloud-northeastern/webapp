@@ -56,9 +56,9 @@ build {
       "sudo apt-get update",
       "sudo apt-get upgrade -y",
       "sudo apt-get install -y software-properties-common",
-      "sudo apt install -y nodejs npm",
-      "sudo apt install -y unzip",
-      "sudo npm install -y -g express nodemon"
+      "sudo apt install -g nodejs npm",
+      "sudo apt install -g unzip",
+      "sudo npm install -g express nodemon"
     ]
   }
 
@@ -82,7 +82,7 @@ build {
       "cd /opt/webapp",
       "sudo chmod g+x index.js",
       "sudo npm install",
-      "sudo npm install -y -g express nodemon",
+      "sudo npm install -g express nodemon",
       "sudo systemctl enable webapp",
       "sudo systemctl start webapp",
     ]
