@@ -8,7 +8,7 @@ const sequelize = new Sequelize({
   username: 'aakashrajawat',
   password: 'aakashrajawat',
   database: 'csye6225',
-  port: 8080,
+  port: 5432,
 });
 
 module.exports = sequelize;
