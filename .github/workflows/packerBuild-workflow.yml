@@ -36,17 +36,6 @@ jobs:
         with:
           version: "latest"
 
-      - name: Create .env file
-        run: |
-          echo DB_HOST=127.0.0.1 >> .env
-          echo DB_PORT=5432 >> .env
-          echo APP_PORT=8080 >> .env
-          echo DB_USER=admin >> .env
-          echo DB_DIALECT=postgres >> .env
-          echo DB_PASSWORD=${{ secrets.DB_ROOT_PASSWORD }} >> .env
-          echo DB_NAME=test >> .env
-          echo TEST_DB_NAME=assignment_portal >> .env
-
       - name: Run `packer init`
         id: init
         run: "packer init ."
