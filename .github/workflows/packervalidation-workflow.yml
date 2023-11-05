@@ -26,7 +26,7 @@ jobs:
             echo DB_HOST=127.0.0.1 >> .env
             echo DB_USER=root >> .env
             echo DB_DIALECT=postgres >> .env
-            echo DB_PASSWORD=${{ secrets.DB_ROOT_PASSWORD }} >> .env
+            echo DB_PASSWORD=${{ secrets.DB_PASSWORD }} >> .env
             echo DB_NAME=postgres >> .env
             echo TEST_DB_NAME=assignment_portal >> .env
 
