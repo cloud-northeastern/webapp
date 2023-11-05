@@ -1,13 +1,17 @@
 [Unit]
-Description=Web App
+Description=webapp
 After=network.target
+Wants=cloud-init.target
 
 [Service]
-User=prod
-Group=prodGroup
-WorkingDirectory=/opt/webapp
-ExecStart=/usr/bin/node /opt/webapp/index.js   
+WorkingDirectory=/home/webappuser/webapp
+ExecStart=/usr/bin/node /home/webappuser/webapp/app.js
 Restart=always
+RestartSec=10
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=webapp
+User=webappuser
 
 [Install]
 WantedBy=multi-user.target

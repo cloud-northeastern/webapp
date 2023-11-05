@@ -1,45 +1,86 @@
-// app.js or index.js
-
+require('dotenv').config();
 const express = require('express');
-const bodyParser = require('body-parser');
-const assignmentRoutes = require('./routes/assignmentRoutes');
-const sequelize = require('./config/database');
-const loadUsersFromCSV = require('./scripts/bootstrap');
-const User = require('./models/user');
+const csv = require('csv-parser')
+const fs =require('fs')
+const User=require('./model/user')
+const bcrypt=require('bcryptjs')
+const Assignment=require('./model/assignment')
+//entry points 
+
+//Database
+const db = require('./config/database.js');
 
 const app = express();
+const assignmentRouter=require('./assignments/assignmentrouter');
+const healthRouter=require('./healthz/healthrouter');
+const { Model } = require('sequelize');
 
-app.use(bodyParser.json());
 
-// Sync the models with the database
-// Sync the models with the database
-sequelize.sync({ force: true })
-  .then(async () => {
-    console.log('Database synced successfully');
-    // Load users from CSV at startup
-    await loadUsersFromCSV();
+app.use(express.json());
 
-    // Start your application logic here
-    app.use('/assignments', assignmentRoutes);
+app.use('/v1/assignments',assignmentRouter);
+app.use('/healthz',healthRouter);
 
-        // Health Check endpoint
-        app.get('/healthz', async (req, res) => {
-            try {
-              // Check if the application can connect to the database
-              await sequelize.authenticate();
-              res.status(200).json({ status: 'OK', message: 'Database connectivity confirmed' });
-            } catch (error) {
-              console.error('Error checking health:', error);
-              res.status(500).json({ status: 'Error', message: 'Database connectivity failed' });
-            }
-          });
-      
-      
-    const PORT = process.env.PORT || 3000;
-    app.listen(PORT, () => {
-      console.log(`Server is running on port ${PORT}`);
+const PORT = process.env.PORT || process.env.APP_PORT;
+
+
+app.listen(PORT, console.log('Server started on Port ' + PORT));
+
+//Authenticate the database
+db.authenticate()
+          .then(() => {
+            console.log('Database connected.');
+        })
+            .catch(err => {
+                console.log('Database not connected.' );
+            });
+
+
+User.sync({alter:true}).then((data)=> {
+
+  console.log("Table and model synced successfully!");
+  fs.createReadStream('./opt/users.csv')
+    .pipe(csv())
+    .on('data', async (row) => {
+    
+      const hashedPassword = await bcrypt.hash(row.password, 10); 
+        User.create({
+            
+            first_name: row.first_name,
+            last_name: row.last_name,
+            email: row.email,
+            password:hashedPassword,
+            account_created: new Date(),
+            account_updated: new Date(),
+
+             
+        })
+        .then((user) => {
+            console.log('Users inserted');
+        })
+        .catch((error) => {
+            console.error('Error inserting users');
+        });
+    })
+    .on('end', () => {
+        console.log('CSV file successfully processed.');
     });
+
+
   })
-  .catch((error) => {
-    console.error('Error syncing database:', error);
-});
+  .catch((err) => {
+  
+  console.log("Error syncing the table and model!");
+  
+  
+  });
+
+Assignment.sync({ alter: true })
+    .then(() => {
+        console.log('Assignment model synced successfully!');
+    })
+    .catch((error) => {
+        console.error('Error syncing Assignment model');
+    });
+
+module.exports =app
