@@ -1,5 +1,4 @@
 name: CI
-
 on:
   pull_request:
     branches:
@@ -13,13 +12,13 @@ jobs:
   tests:
     runs-on: ubuntu-latest
     env:
-      DB_HOST: ${{ secrets.DB_HOST }}
-      DB_USER: ${{ secrets.DB_USER }}
-      DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-      DB_POSTGRES: ${{ secrets.DB_POSTGRES }}
-      DB_DIALECT: ${{ secrets.DB_DIALECT }}
-      APP_PORT: ${{ secrets.APP_PORT }}
-      DB_PORT: ${{ secrets.DB_PORT }}
+      DB_HOST: '${{ secrets.DB_HOST }}'
+      DB_USER: '${{ secrets.DB_USER }}'
+      DB_PASSWORD: '${{ secrets.DB_PASSWORD }}'
+      DB_MYSQL: '${{ secrets.DB_MYSQL }}'
+      DB_DIALECT: '${{ secrets.DB_DIALECT }}'
+      APP_PORT: '${{ secrets.APP_PORT }}'
+      DB_PORT: '${{ secrets.DB_PORT }}'
 
     strategy:
       matrix:
@@ -27,26 +26,16 @@ jobs:
           - 18.x
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Install dependencies
-        run: npm i
-
-      - name: Setup Node.js
+      - uses: actions/checkout@v2
+      - run: npm i
+      - name: 'Using, Node, Express, and Sequelize'
         uses: actions/setup-node@v2
         with:
           node-version: '18'
           cache: npm
-
-      - name: Install PostgreSQL client
-        run: sudo apt-get install -y postgresql-client
-
-      - name: Install wait-for-it
-        run: |
-          sudo apt-get install -y postgresql-client
-          wget https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh
-          chmod +x wait-for-it.sh
-
-      - name: Run tests
-        run: npm test
+      - run: sudo systemctl start mysql
+      - run: systemctl status mysql
+      - run: sudo apt-get install -y wait-for-it
+      - run: wait-for-it --timeout=60 ${{ secrets.DB_HOST }}:${{ secrets.DB_PORT }} -s -- echo "MySQL is up"
+      - run: sudo mysql --user=${{ secrets.DB_USER }} --password=${{ secrets.DB_PASSWORD }} -e "create database ${{ secrets.DB_MYSQL }}";
+      - run: npm test
