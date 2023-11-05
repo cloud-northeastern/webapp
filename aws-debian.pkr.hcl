@@ -52,7 +52,7 @@ source "amazon-ebs" "debian" {
       virtualization-type = "hvm"
     }
     most_recent = true
-    owners      = ["aws-marketplace"]
+    owners      = ["${var.sourceAMIOwner}"]
   }
   ami_users = ["${var.AMIsharedOwnerID}"]
 
