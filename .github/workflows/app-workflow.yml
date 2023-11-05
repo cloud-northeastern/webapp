@@ -1,4 +1,5 @@
 name: CI
+
 on:
   pull_request:
     branches:
@@ -15,7 +16,7 @@ jobs:
       DB_HOST: '${{ secrets.DB_HOST }}'
       DB_USER: '${{ secrets.DB_USER }}'
       DB_PASSWORD: '${{ secrets.DB_PASSWORD }}'
-      DB_MYSQL: '${{ secrets.DB_MYSQL }}'
+      DB_PGSQL: '${{ secrets.DB_POSTGRES }}' 
       DB_DIALECT: '${{ secrets.DB_DIALECT }}'
       APP_PORT: '${{ secrets.APP_PORT }}'
       DB_PORT: '${{ secrets.DB_PORT }}'
@@ -33,9 +34,9 @@ jobs:
         with:
           node-version: '18'
           cache: npm
-      - run: sudo systemctl start mysql
-      - run: systemctl status mysql
+      - run: sudo systemctl start postgresql 
+      - run: systemctl status postgresql 
       - run: sudo apt-get install -y wait-for-it
-      - run: wait-for-it --timeout=60 ${{ secrets.DB_HOST }}:${{ secrets.DB_PORT }} -s -- echo "MySQL is up"
-      - run: sudo mysql --user=${{ secrets.DB_USER }} --password=${{ secrets.DB_PASSWORD }} -e "create database ${{ secrets.DB_MYSQL }}";
+      - run: wait-for-it --timeout=60 ${{ secrets.DB_HOST }}:${{ secrets.DB_PORT }} -s -- echo "PostgreSQL is up"
+      - run: sudo -u postgres psql -c "create database ${{ secrets.DB_POSTGRES }};"
       - run: npm test
