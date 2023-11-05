@@ -40,5 +40,4 @@ jobs:
           wget https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh
           chmod +x wait-for-it.sh
 
-      - run: psql -h ${{ secrets.DB_HOST }} -U ${{ secrets.DB_USER }} -d postgres -c "CREATE DATABASE ${{ secrets.DB_POSTGRES }}"
       - run: npm test
