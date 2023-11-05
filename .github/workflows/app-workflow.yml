@@ -1,4 +1,5 @@
 name: CI
+
 on:
   pull_request:
     branches:
@@ -12,13 +13,13 @@ jobs:
   tests:
     runs-on: ubuntu-latest
     env:
-      DB_HOST: '${{ secrets.DB_HOST }}'
-      DB_USER: '${{ secrets.DB_USER }}'
-      DB_PASSWORD: '${{ secrets.DB_PASSWORD }}'
-      DB_POSTGRES: '${{ secrets.DB_POSTGRES}}'
-      DB_DIALECT: '${{ secrets.DB_DIALECT }}'
-      APP_PORT: '${{ secrets.APP_PORT }}'
-      DB_PORT: '${{ secrets.DB_PORT }}'
+      DB_HOST: ${{ secrets.DB_HOST }}
+      DB_USER: ${{ secrets.DB_USER }}
+      DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+      DB_POSTGRES: ${{ secrets.DB_POSTGRES }}
+      DB_DIALECT: ${{ secrets.DB_DIALECT }}
+      APP_PORT: ${{ secrets.APP_PORT }}
+      DB_PORT: ${{ secrets.DB_PORT }}
 
     strategy:
       matrix:
@@ -26,18 +27,26 @@ jobs:
           - 18.x
 
     steps:
-      - uses: actions/checkout@v2
-      - run: npm i
-      - name: 'Using, Node, Express, and Sequelize'
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: npm i
+
+      - name: Setup Node.js
         uses: actions/setup-node@v2
         with:
           node-version: '18'
           cache: npm
-      - run: sudo apt-get install -y postgresql-client
-      - name: Install PostgreSQL client and wait-for-it        
+
+      - name: Install PostgreSQL client
+        run: sudo apt-get install -y postgresql-client
+
+      - name: Install wait-for-it
         run: |
           sudo apt-get install -y postgresql-client
           wget https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh
           chmod +x wait-for-it.sh
 
-      - run: npm test
+      - name: Run tests
+        run: npm test

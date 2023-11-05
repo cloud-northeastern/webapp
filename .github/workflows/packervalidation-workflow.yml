@@ -39,7 +39,3 @@ jobs:
 
       - name: Run packer validate
         run: packer validate .
-
-      - name: Fail if packer validate fails
-        if: ${{ steps.setup.outputs.exit-code != 0 }}
-        run: exit 1
