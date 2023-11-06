@@ -5,7 +5,7 @@ Wants=cloud-init.target
 
 [Service]
 WorkingDirectory=/home/webappuser/webapp
-ExecStart=/usr/bin/node /home/webappuser/webapp/app.js
+ExecStart=/usr/bin/node /home/webappuser/webapp/index.js
 Restart=always
 RestartSec=10
 StandardOutput=syslog
