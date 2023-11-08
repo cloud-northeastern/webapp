@@ -112,7 +112,7 @@ ls -ltrah
 
 cd /home/admin/
 
-sudo chmod 744 /home/webappuser/
+sudo chmod 770 /home/webappuser/
 
 sudo chown -R webappuser:webappuser /home/webappuser/webapp
 
@@ -123,16 +123,16 @@ sudo mv /tmp/webapp.service /etc/systemd/system/webapp.service
 sudo systemctl daemon-reload
 
 
-sudo systemctl enable webapp
+sudo systemctl enable webapp.service
 
 
-sudo systemctl start webapp
+sudo systemctl start webapp.service
 
 sudo echo $?
 
 sleep 20
 
-sudo systemctl status webapp
+sudo systemctl status webapp.service
 
 sudo systemctl restart webapp.service
 

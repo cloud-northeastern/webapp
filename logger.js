@@ -9,7 +9,7 @@ const logFormat = winston.format.printf(({ level, message, timestamp }) => {
 const logger = winston.createLogger({
   format: winston.format.combine(winston.format.timestamp(), logFormat),
   transports: [
-    new winston.transports.File({ filename: 'app.log' }),
+    new winston.transports.File({ filename: '/home/webappuser/webapp/app.log' }),
     new winston.transports.Console(),
   ],
 });
