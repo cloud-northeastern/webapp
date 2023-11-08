@@ -135,4 +135,4 @@ sudo systemctl status webapp
 sudo echo $?
 
 sudo mkdir -p /opt/aws/amazon-cloudwatch-agent/etc
-sudo cp /opt/cloudwatch-agent.json /opt/aws/amazon-cloudwatch-agent/etc/
+sudo cp cloudwatch-agent.json /opt/aws/amazon-cloudwatch-agent/etc/
