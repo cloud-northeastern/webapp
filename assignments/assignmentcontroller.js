@@ -6,7 +6,7 @@ const db = require('../config/database');
 const User = require('../model/user');
 const base64 = require('base-64');
 
-//const logger = require('../logger'); 
+const logger = require('../logger'); 
 
   
 module.exports = {
@@ -34,17 +34,17 @@ module.exports = {
      const userId=req.currentUser.id;
 
      if (!name || !points || !num_of_attemps || !deadline) {
-        //logger.warn(`400 Bad request`);
+        logger.warn(`400 Bad request`);
         return res.status(400).json({error: 'Body required for POST endpoint'});
     }
         
         if (points < 1 || points > 10 || !Number.isInteger(points)) {
-          //  logger.warn(`400 Bad request`);
+            logger.warn(`400 Bad request`);
             return res.status(400).json();
         }
     
         if (num_of_attemps < 1 || num_of_attemps > 3 || !Number.isInteger(num_of_attemps)) {
-            //logger.warn(`400 Bad request`);
+            logger.warn(`400 Bad request`);
             return res.status(400).json();
         }
 
@@ -77,7 +77,7 @@ module.exports = {
 getAssignment: async (req, res) => {
     
     if (req.headers['content-length'] > 0) {
-        //logger.warn(`400 Bad request`);
+        logger.warn(`400 Bad request`);
         return res.status(400).json({ error: 'Body not allowed for GET endpoint' });
     }
 
@@ -86,7 +86,7 @@ getAssignment: async (req, res) => {
     try {
         let results = await Assignment.findOne({ where: { id: assignmentId } });
         if (results == null) {
-          //  logger.warn(`404-Not Found`);
+            logger.warn(`404-Not Found`);
             return res.status(404).json({
 
                 message: "Not Found",
@@ -110,14 +110,10 @@ getAssignment: async (req, res) => {
     }
 },
 
-
-
-
-
     deleteAssignment: async (req, res) => {
         
         if (req.headers['content-length'] > 0) {
-           // logger.warn(`400 Bad request`);
+            logger.warn(`400 Bad request`);
             return res.status(400).json({ error: 'Body not allowed for DELETE request' });
         }
     
@@ -128,7 +124,7 @@ getAssignment: async (req, res) => {
             const assignment = await Assignment.findByPk(assignmentId);
     
             if (!assignment) {
-               // logger.warn(`404 Not Found`);
+                logger.warn(`404 Not Found`);
                 return res.status(404).json({                    
                     message: 'Assignment not found.'
                 });
@@ -140,7 +136,7 @@ getAssignment: async (req, res) => {
     
                 return res.status(204).send(); 
             } else {
-               // logger.warn(`403 Status code Returned`);
+                logger.warn(`403 Status code Returned`);
                 return res.status(403).send(); 
             }
         } catch (error) {
@@ -158,14 +154,14 @@ getAssignment: async (req, res) => {
     
     
         if (!name || !points || !num_of_attemps || !deadline) {
-            //logger.warn(`400 Bad request`);
+            logger.warn(`400 Bad request`);
             return res.status(400).json({error: 'Body required for PUT endpoint'});
         }
     
         
         if (!Number.isInteger(points) || points < 1 || points > 10 ||
             !Number.isInteger(num_of_attemps) || num_of_attemps < 1 || num_of_attemps > 3) {
-                //logger.warn(`400 Bad request`);
+                logger.warn(`400 Bad request`);
             return res.status(400).json({error: 'Request body validations arent met'});
         }
     
@@ -181,7 +177,7 @@ getAssignment: async (req, res) => {
             const assignment = await Assignment.findByPk(assignmentId);
     
             if (!assignment) {
-                //logger.warn(`404 Not Found`);
+                logger.warn(`404 Not Found`);
                 return res.status(404).json({                    
                     message: 'Assignment not found.'
                 });
@@ -223,7 +219,7 @@ getAssignment: async (req, res) => {
             const assignments = await Assignment.findAll();
 
             if (assignments.length === 0) {
-                //logger.warn(`404 Not Found`);
+                logger.warn(`404 Not Found`);
                 return res.status(404).json({
                     message: 'No assignments found.'
                 });
