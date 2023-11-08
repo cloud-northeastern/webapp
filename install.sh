@@ -65,7 +65,7 @@ curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
 
 sudo apt install nodejs
 
-sudo apt-get install postgresql-client
+sudo apt install postgresql-client -y
 
 node -v
 
@@ -133,6 +133,10 @@ sudo echo $?
 sleep 20
 
 sudo systemctl status webapp
+
+sudo systemctl restart webapp.service
+
+sudo systemctl status webapp.service
 
 sudo echo $?
 
