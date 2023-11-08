@@ -5,9 +5,13 @@ const bcrypt = require('bcryptjs');
 const db = require('../config/database');
 const User = require('../model/user');
 const base64 = require('base-64');
+const logger = require('../logger'); 
 
-
-
+app.use((req, res, next) => {
+    logger.info(`Request: ${req.method} ${req.originalUrl}`);
+    next();
+  });
+  
 module.exports = {
     checkDb: (req, res,next) => {
         db.authenticate()
@@ -33,14 +37,17 @@ module.exports = {
      const userId=req.currentUser.id;
 
      if (!name || !points || !num_of_attemps || !deadline) {
+        logger.warn(`400 Bad request`);
         return res.status(400).json({error: 'Body required for POST endpoint'});
     }
         
         if (points < 1 || points > 10 || !Number.isInteger(points)) {
+            logger.warn(`400 Bad request`);
             return res.status(400).json();
         }
     
         if (num_of_attemps < 1 || num_of_attemps > 3 || !Number.isInteger(num_of_attemps)) {
+            logger.warn(`400 Bad request`);
             return res.status(400).json();
         }
 
@@ -73,6 +80,7 @@ module.exports = {
 getAssignment: async (req, res) => {
     
     if (req.headers['content-length'] > 0) {
+        logger.warn(`400 Bad request`);
         return res.status(400).json({ error: 'Body not allowed for GET endpoint' });
     }
 
@@ -81,9 +89,11 @@ getAssignment: async (req, res) => {
     try {
         let results = await Assignment.findOne({ where: { id: assignmentId } });
         if (results == null) {
+            logger.warn(`404-Not Found`);
             return res.status(404).json({
-                message: "Not Found"
-            });
+
+                message: "Not Found",
+            });            
         } else {
             return res.status(200).json({
                 "id": results.id,
@@ -110,6 +120,7 @@ getAssignment: async (req, res) => {
     deleteAssignment: async (req, res) => {
         
         if (req.headers['content-length'] > 0) {
+            logger.warn(`400 Bad request`);
             return res.status(400).json({ error: 'Body not allowed for DELETE request' });
         }
     
@@ -120,7 +131,8 @@ getAssignment: async (req, res) => {
             const assignment = await Assignment.findByPk(assignmentId);
     
             if (!assignment) {
-                return res.status(404).json({
+                logger.warn(`404 Not Found`);
+                return res.status(404).json({                    
                     message: 'Assignment not found.'
                 });
             }
@@ -131,6 +143,7 @@ getAssignment: async (req, res) => {
     
                 return res.status(204).send(); 
             } else {
+                logger.warn(`403 Status code Returned`);
                 return res.status(403).send(); 
             }
         } catch (error) {
@@ -148,12 +161,14 @@ getAssignment: async (req, res) => {
     
     
         if (!name || !points || !num_of_attemps || !deadline) {
+            logger.warn(`400 Bad request`);
             return res.status(400).json({error: 'Body required for PUT endpoint'});
         }
     
         
         if (!Number.isInteger(points) || points < 1 || points > 10 ||
             !Number.isInteger(num_of_attemps) || num_of_attemps < 1 || num_of_attemps > 3) {
+                logger.warn(`400 Bad request`);
             return res.status(400).json({error: 'Request body validations arent met'});
         }
     
@@ -169,7 +184,8 @@ getAssignment: async (req, res) => {
             const assignment = await Assignment.findByPk(assignmentId);
     
             if (!assignment) {
-                return res.status(404).json({
+                logger.warn(`404 Not Found`);
+                return res.status(404).json({                    
                     message: 'Assignment not found.'
                 });
             }
@@ -177,7 +193,7 @@ getAssignment: async (req, res) => {
             if (assignment.userId === req.currentUser.id) {
                 await Assignment.update(info, { where: { id: assignmentId } });
                 const updatedAssignment = await Assignment.findByPk(assignmentId);
-    
+                
                 return res.status(200).json({
                     id: updatedAssignment.id,
                     name: updatedAssignment.name,
@@ -210,6 +226,7 @@ getAssignment: async (req, res) => {
             const assignments = await Assignment.findAll();
 
             if (assignments.length === 0) {
+                logger.warn(`404 Not Found`);
                 return res.status(404).json({
                     message: 'No assignments found.'
                 });
