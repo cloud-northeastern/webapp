@@ -65,6 +65,8 @@ curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
 
 sudo apt install nodejs
 
+sudo apt-get install postgresql-client
+
 node -v
 
 npm -v
@@ -135,4 +137,5 @@ sudo systemctl status webapp
 sudo echo $?
 
 sudo mkdir -p /opt/aws/amazon-cloudwatch-agent/etc
+
 sudo cp /tmp/cloudwatch-agent.json /opt/aws/amazon-cloudwatch-agent/etc/
