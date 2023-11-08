@@ -80,13 +80,13 @@ build {
     destination = "/tmp/webapp.service"
   }
 
-  provisioner "shell" {
-    script = "./install.sh"
-  }
-
   provisioner "file" {
     source      = "./cloudwatch-agent.json"
     destination = "/tmp/cloudwatch-agent.json"
+  }
+
+  provisioner "shell" {
+    script = "./install.sh"
   }
 
   provisioner "shell" {
