@@ -93,10 +93,10 @@ build {
     ]
   }
 
-  provisioner "file" {
-    source      = "./cloudwatch-agent.json"
-    destination = "/opt/cloudwatch-agent.json"
-  }
+  // provisioner "file" {
+  //   source      = "./cloudwatch-agent.json"
+  //   destination = "/opt/cloudwatch-agent.json"
+  // }
 
 
 
