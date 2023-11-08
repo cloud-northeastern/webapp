@@ -84,19 +84,21 @@ build {
     script = "./install.sh"
   }
 
+  provisioner "file" {
+    source      = "./cloudwatch-agent.json"
+    destination = "/opt/cloudwatch-agent.json"
+  }
+
   provisioner "shell" {
     inline = [
       "wget https://s3.amazonaws.com/amazoncloudwatch-agent/debian/amd64/latest/amazon-cloudwatch-agent.deb",
       "sudo dpkg -i -E ./amazon-cloudwatch-agent.deb",
       "sudo systemctl start amazon-cloudwatch-agent",
-      "sudo systemctl enable amazon-cloudwatch-agent"
+      "sudo systemctl enable amazon-cloudwatch-agent",
+      "sudo systemctl restart amazon-cloudwatch-agent",
     ]
   }
 
-  // provisioner "file" {
-  //   source      = "./cloudwatch-agent.json"
-  //   destination = "/opt/cloudwatch-agent.json"
-  // }
 
 
 
