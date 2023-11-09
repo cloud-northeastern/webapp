@@ -86,7 +86,7 @@ sudo ls -ltrh
 sudo mkdir /opt/webappuser/webapp
  
 
-sudo cp /opt/admin/webapp.zip /opt/webappuser/webapp/
+sudo cp /home/admin/webapp.zip /opt/webappuser/webapp/
 
 ls -ltrah /opt/webappuser/webapp/
 
