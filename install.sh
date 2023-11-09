@@ -83,22 +83,22 @@ echo "below are current repo folders"
 
 sudo ls -ltrh
  
-sudo mkdir /home/webappuser/webapp
+sudo mkdir /opt/webappuser/webapp
  
 
-sudo cp /home/admin/webapp.zip /home/webappuser/webapp/
+sudo cp /opt/admin/webapp.zip /opt/webappuser/webapp/
 
-ls -ltrah /home/webappuser/webapp/
+ls -ltrah /opt/webappuser/webapp/
 
-cd /home/webappuser/webapp
+cd /opt/webappuser/webapp
 
 ls -ltrah
 
 pwd
 
-sudo unzip /home/webappuser/webapp/webapp.zip
+sudo unzip /opt/webappuser/webapp/webapp.zip
 
-sudo ls -ltrah /home/webappuser/webapp
+sudo ls -ltrah /opt/webappuser/webapp
 
 sudo npm ci
 
@@ -109,14 +109,13 @@ sudo npm fund
 
 ls -ltrah
 
+cd /opt/admin/
 
-cd /home/admin/
+sudo chmod 770 /opt/webappuser/
 
-sudo chmod 770 /home/webappuser/
+sudo chown -R webappuser:webappuser /opt/webappuser/webapp
 
-sudo chown -R webappuser:webappuser /home/webappuser/webapp
-
-sudo ls -ltrah /home/webappuser/
+sudo ls -ltrah /opt/webappuser/
 
 sudo mv /tmp/webapp.service /etc/systemd/system/webapp.service
 
