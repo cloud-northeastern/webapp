@@ -11,7 +11,7 @@ RestartSec=10
 StandardOutput=syslog
 StandardError=syslog
 SyslogIdentifier=webapp
-User=webappuser
+User=csye6225
 
 [Install]
 WantedBy=multi-user.target
