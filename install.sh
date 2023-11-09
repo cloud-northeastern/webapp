@@ -83,7 +83,7 @@ echo "below are current repo folders"
 
 sudo ls -ltrh
  
-sudo mkdir /home/webappuser/webapp
+#sudo mkdir /home/webappuser/webapp
  
 
 sudo cp /home/admin/webapp.zip /opt/webapp.zip
@@ -149,6 +149,6 @@ sudo systemctl status webapp.service
 
 sudo echo $?
 
-#sudo mkdir -p /opt/aws/amazon-cloudwatch-agent/etc
+sudo mkdir -p /opt/aws/amazon-cloudwatch-agent/etc
 
-#sudo cp /tmp/cloudwatch-agent.json /opt/aws/amazon-cloudwatch-agent/etc/
+sudo cp /tmp/cloudwatch-agent.json /opt/aws/amazon-cloudwatch-agent/etc/
