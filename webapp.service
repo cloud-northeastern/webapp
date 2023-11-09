@@ -4,8 +4,8 @@ After=network.target
 Wants=cloud-init.target
 
 [Service]
-WorkingDirectory=/home/webappuser/webapp
-ExecStart=/usr/bin/node /home/webappuser/webapp/index.js
+WorkingDirectory=/opt/csye6225/webapp
+ExecStart=/usr/bin/node /opt/csye6225/webapp/index.js
 Restart=always
 RestartSec=10
 StandardOutput=syslog
