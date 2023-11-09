@@ -72,7 +72,7 @@ build {
 
   provisioner "file" {
     source      = "./webapp.zip"
-    destination = "/home/admin/webapp.zip"
+    destination = "/tmp/webapp.zip"
   }
 
   provisioner "file" {
@@ -80,10 +80,10 @@ build {
     destination = "/tmp/webapp.service"
   }
 
-  provisioner "file" {
-    source      = "./cloudwatch-agent.json"
-    destination = "/tmp/cloudwatch-agent.json"
-  }
+  // provisioner "file" {
+  //   source      = "./cloudwatch-agent.json"
+  //   destination = "/tmp/cloudwatch-agent.json"
+  // }
 
 
   provisioner "shell" {

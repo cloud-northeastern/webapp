@@ -86,7 +86,7 @@ sudo ls -ltrh
 #sudo mkdir /home/webappuser/webapp
  
 
-sudo cp /home/admin/webapp.zip /opt/webapp.zip
+sudo cp /tmp/webapp.zip /opt/webapp.zip
 sudo groupadd csye6225
 sudo useradd -s /bin/false -g csye6225 -d /opt/csye6225 -m csye6225
 sudo unzip /opt/webapp.zip -d /opt/csye6225/
@@ -149,6 +149,6 @@ sudo systemctl status webapp.service
 
 sudo echo $?
 
-sudo mkdir -p /opt/aws/amazon-cloudwatch-agent/etc
+#sudo mkdir -p /opt/aws/amazon-cloudwatch-agent/etc
 
-sudo cp /tmp/cloudwatch-agent.json /opt/aws/amazon-cloudwatch-agent/etc/
+#sudo cp /tmp/cloudwatch-agent.json /opt/aws/amazon-cloudwatch-agent/etc/
