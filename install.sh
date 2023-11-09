@@ -112,7 +112,7 @@ sudo unzip /opt/webapp.zip -d /opt/csye6225/
 
 #ls -ltrah
 
-cd /opt/csye6225/webapp
+cd /opt/csye6225
 sudo npm install
 echo "Server setup completed!!"
 
