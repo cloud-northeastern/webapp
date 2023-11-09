@@ -86,37 +86,47 @@ sudo ls -ltrh
 sudo mkdir /home/webappuser/webapp
  
 
-sudo cp /home/admin/webapp.zip /home/webappuser/webapp/
+sudo cp /home/admin/webapp.zip /opt/webapp.zip
+sudo groupadd csye6225
+sudo useradd -s /bin/false -g csye6225 -d /opt/csye6225 -m csye6225
+sudo unzip /opt/webapp.zip -d /opt/csye6225/
 
-ls -ltrah /home/webappuser/webapp/
+#ls -ltrah /home/webappuser/webapp/
 
-cd /home/webappuser/webapp
+#cd /home/webappuser/webapp
 
-ls -ltrah
+#ls -ltrah
 
-pwd
+#pwd
 
-sudo unzip /home/webappuser/webapp/webapp.zip
+#sudo unzip /home/webappuser/webapp/webapp.zip
 
-sudo ls -ltrah /home/webappuser/webapp
+#sudo ls -ltrah /home/webappuser/webapp
 
-sudo npm ci
+#sudo npm ci
 
-sudo npm install --save
+#sudo npm install --save
 
-sudo npm fund
-
-
-ls -ltrah
+#sudo npm fund
 
 
-cd /home/admin/
+#ls -ltrah
 
-sudo chmod 770 /home/webappuser/
+cd /opt/csye6225/webapp
+sudo npm install
+echo "Server setup completed!!"
 
-sudo chown -R webappuser:webappuser /home/webappuser/webapp
+sudo systemctl enable amazon-cloudwatch-agent
+sudo systemctl start amazon-cloudwatch-agent
 
-sudo ls -ltrah /home/webappuser/
+
+#cd /home/admin/
+
+#sudo chmod 770 /home/webappuser/
+
+#sudo chown -R webappuser:webappuser /home/webappuser/webapp
+
+#sudo ls -ltrah /home/webappuser/
 
 sudo mv /tmp/webapp.service /etc/systemd/system/webapp.service
 
@@ -139,6 +149,6 @@ sudo systemctl status webapp.service
 
 sudo echo $?
 
-sudo mkdir -p /opt/aws/amazon-cloudwatch-agent/etc
+#sudo mkdir -p /opt/aws/amazon-cloudwatch-agent/etc
 
-sudo cp /tmp/cloudwatch-agent.json /opt/aws/amazon-cloudwatch-agent/etc/
+#sudo cp /tmp/cloudwatch-agent.json /opt/aws/amazon-cloudwatch-agent/etc/
