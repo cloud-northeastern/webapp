@@ -34,21 +34,21 @@ module.exports = {
         const { name, points, num_of_attemps, deadline } = req.body;
         
      const userId=req.currentUser.id;
-
+     stats.increment('post');
      if (!name || !points || !num_of_attemps || !deadline) {
-        stats.increment('bad_request');
+        //stats.increment('bad_request');
         logger.warn(`400 Bad request`);
         return res.status(400).json({error: 'Body required for POST endpoint'});
     }
         
         if (points < 1 || points > 10 || !Number.isInteger(points)) {
-            stats.increment('bad_request');
+            //stats.increment('bad_request');
             logger.warn(`400 Bad request`);
             return res.status(400).json();
         }
     
         if (num_of_attemps < 1 || num_of_attemps > 3 || !Number.isInteger(num_of_attemps)) {
-            stats.increment('bad_request');
+            //stats.increment('bad_request');
             logger.warn(`400 Bad request`);
             return res.status(400).json();
         }
@@ -80,9 +80,9 @@ module.exports = {
     },
     
 getAssignment: async (req, res) => {
-    
+    stats.increment('get');
     if (req.headers['content-length'] > 0) {
-        stats.increment('bad_request');
+        //stats.increment('bad_request');
         logger.warn(`400 Bad request`);
         return res.status(400).json({ error: 'Body not allowed for GET endpoint' });
     }
@@ -92,7 +92,7 @@ getAssignment: async (req, res) => {
     try {
         let results = await Assignment.findOne({ where: { id: assignmentId } });
         if (results == null) {
-            stats.increment('bad_request');
+            //stats.increment('bad_request');
             logger.warn(`404-Not Found`);
             return res.status(404).json({
 
@@ -111,7 +111,7 @@ getAssignment: async (req, res) => {
         }
     } catch (error) {
         console.error('Error fetching assignment:', error);
-        stats.increment('Internal Server Error');
+        //stats.increment('Internal Server Error');
         return res.status(500).json({
             message: 'Internal Server Error'
         });
@@ -119,9 +119,9 @@ getAssignment: async (req, res) => {
 },
 
     deleteAssignment: async (req, res) => {
-        
+        stats.increment('delete');
         if (req.headers['content-length'] > 0) {
-            stats.increment('bad_request');
+            //stats.increment('bad_request');
             logger.warn(`400 Bad request`);
             return res.status(400).json({ error: 'Body not allowed for DELETE request' });
         }
@@ -133,7 +133,7 @@ getAssignment: async (req, res) => {
             const assignment = await Assignment.findByPk(assignmentId);
     
             if (!assignment) {
-                stats.increment('Not Found');
+                //stats.increment('Not Found');
                 logger.warn(`404 Not Found`);
                 return res.status(404).json({                    
                     message: 'Assignment not found.'
@@ -146,7 +146,7 @@ getAssignment: async (req, res) => {
     
                 return res.status(204).send(); 
             } else {
-                stats.increment('403');
+                //stats.increment('403');
                 logger.warn(`403 Status code Returned`);
                 return res.status(403).send(); 
             }
@@ -160,12 +160,13 @@ getAssignment: async (req, res) => {
     
     
     updateAssignment: async (req, res) => {
+        stats.increment('update');
         const { name, points, num_of_attemps, deadline } = req.body;
         const assignmentId = req.params.assignmentId;
     
     
         if (!name || !points || !num_of_attemps || !deadline) {
-            stats.increment('bad_request');
+            //stats.increment('bad_request');
             logger.warn(`400 Bad request`);
             return res.status(400).json({error: 'Body required for PUT endpoint'});
         }
@@ -173,7 +174,7 @@ getAssignment: async (req, res) => {
         
         if (!Number.isInteger(points) || points < 1 || points > 10 ||
             !Number.isInteger(num_of_attemps) || num_of_attemps < 1 || num_of_attemps > 3) {
-                stats.increment('bad_request');
+                //stats.increment('bad_request');
                 logger.warn(`400 Bad request`);
             return res.status(400).json({error: 'Request body validations arent met'});
         }
@@ -190,7 +191,7 @@ getAssignment: async (req, res) => {
             const assignment = await Assignment.findByPk(assignmentId);
     
             if (!assignment) {
-                stats.increment('not Found');
+                //stats.increment('not Found');
                 logger.warn(`404 Not Found`);
                 return res.status(404).json({                    
                     message: 'Assignment not found.'
@@ -223,6 +224,7 @@ getAssignment: async (req, res) => {
     
 
     getAllAssignments: async (req, res) => {
+        stats.increment('get');
         if (req.headers['content-length'] > 0) {
             return res.status(400).json({ error: 'Body not allowed for GET ALL endpoint' });
         }
@@ -233,7 +235,7 @@ getAssignment: async (req, res) => {
             const assignments = await Assignment.findAll();
 
             if (assignments.length === 0) {
-                stats.increment('Not Found');
+                //stats.increment('Not Found');
                 logger.warn(`404 Not Found`);
                 return res.status(404).json({
                     message: 'No assignments found.'
