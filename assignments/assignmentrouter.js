@@ -3,7 +3,7 @@ const {basicAuth}= require('../auth/validation.js')
 const router = require('express').Router();
 
 router.post('/',checkDb, basicAuth, createAssignment);
-router.post("/:assignmentId/submission",checkDb,basicAuth,submitAssignment);
+router.post('/:assignmentId/submission',checkDb,basicAuth,submitAssignment);
 router.get('/',checkDb,  basicAuth, getAllAssignments);
 router.get('/:assignmentId',checkDb,  basicAuth, getAssignment);
 router.delete('/:assignmentId',checkDb,  basicAuth,deleteAssignment );

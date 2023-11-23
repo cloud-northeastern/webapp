@@ -41,7 +41,7 @@ module.exports = {
         logger.warn(`400 Bad request`);
         return res.status(400).json({error: 'Body required for POST endpoint'});
     }
-        
+         
         if (points < 1 || points > 10 || !Number.isInteger(points)) {
             //stats.increment('bad_request');
             logger.warn(`400 Bad request`);
@@ -225,22 +225,15 @@ getAssignment: async (req, res) => {
 
 
     submitAssignment: async (req, res) => {
-    const { submission_url } = req.body;
-        
-    const assignment_id=req.params;
-
+    const { submission_url } = req.body;  
+    const { assignment_id } = req.params;
     stats.increment('post');
+    
      if (!submission_url) {
         //stats.increment('bad_request');
         logger.warn(`400 Bad request`);
         return res.status(400).json({error: 'Submission URL Required'});
     }
-        // if (points < 1 || points > 10 || !Number.isInteger(points)) {
-        //     stats.increment('bad_request');
-        //     logger.warn(`400 Bad request`);
-        //     return res.status(400).json();
-        // }
-    
         // if (num_of_attemps < 1 || num_of_attemps > 3 || !Number.isInteger(num_of_attemps)) {
         //     //stats.increment('bad_request');
         //     logger.warn(`400 Bad request`);
@@ -263,7 +256,7 @@ getAssignment: async (req, res) => {
             });
         } catch (error) {
             // Handling  other errors 
-            console.error('Error creating assignment:', error);
+            console.error('Error submitting assignment:', error);
             return res.status(500).json({ error: 'Internal Server Error' });
         }
     },

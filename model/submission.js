@@ -1,7 +1,6 @@
 const Sequelize = require('sequelize');
 const sequelize = require('../config/database');
-//const User = require('./user');
-const assignment = require('./assignment');
+const Assignment = require('./assignment');
 
 const Submission = sequelize.define('submission', {
     id: {
@@ -15,6 +14,10 @@ const Submission = sequelize.define('submission', {
         references: {
             model: assignment,
             key: 'id',
+
+            // onUpdate: 'CASCADE',
+            // onDelete: 'CASCADE',
+
         }
     },
     submission_url: {
@@ -24,6 +27,6 @@ const Submission = sequelize.define('submission', {
     timestamps: true
 });
 
-Submission.belongsTo(assignment, { foreignKey: 'assignment_id' }); // Define the association
+Submission.belongsTo(Assignment, { foreignKey: 'assignment_id' }); // Define the association
 
 module.exports = Submission;
