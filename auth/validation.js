@@ -14,7 +14,7 @@ module.exports ={
     
         // Check if authorization header is missing
         if (!authHeader) {
-            return res.status(400).json({ error: 'Missing Authorization header' });
+            return res.status(400).json({ error: 'Missing Basic Auth' });
         }
     
         const authHeaderParts = authHeader.split(' ');
