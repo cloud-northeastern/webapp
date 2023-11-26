@@ -81,47 +81,48 @@ module.exports = {
     },
 
     submitAssignment: async (req, res) => {
-     
-     const { submission_url } = req.body;
-     logger.info('Submission URL:', submission_url);
-     //const userId=req.currentUser.id;
-     
-     const assignment_id = req.params.assignmentId;
-     //logger.info('assignment_id' , assignment_id);
-     
-     stats.increment('post');
-     if (!submission_url) {
-        //stats.increment('bad_request');
-        logger.warn(`400 Bad request`);
-        return res.status(400).json({error: 'Submission URL required'});
-    }
-
-
-
+    
+        const { submission_url } = req.body;
+        logger.info('Submission URL:', submission_url);
+        
+        const assignment_id = req.params.assignmentId;
+        logger.info('Assignment ID:', assignment_id);
+        
+        stats.increment('post');
+        if (!submission_url) {
+           logger.warn('400 Bad request: Submission URL required');
+           return res.status(400).json({error: 'Submission URL required'});
+        }
+    
         try {
             logger.info('Try start');
             const submission = await Submission.create({
-                //assignment_id,
+                assignment_id,
                 submission_url,
             });
-//            console.log("Assignment_id", assignment_id);
-            
+            logger.info('Submission created:', submission);
+    
             return res.status(201).json({
                 "id": submission.id,
-                //"assignment_id": assignment_id,
+                "assignment_id": assignment_id,
                 "submission_url": submission.submission_url,
                 "submission_date": submission.createdAt,
                 "submission_updated": submission.updatedAt
             });
-            
-
+    
         } catch (error) {
-            // Handling  other errors 
-            console.error('Error creating assignment:', error);
+            // Detailed error logging
+            logger.error('Error creating submission:', error);
+    
+            // You can add more specific error handling here if needed
+            if (error.name === 'SomeSpecificError') {
+                return res.status(YourSpecificErrorCode).json({ error: 'Specific error message' });
+            }
+    
             return res.status(500).json({ error: 'Internal Server Error' });
         }
     },
-
+    
 getAssignment: async (req, res) => {
     stats.increment('get');
     if (req.headers['content-length'] > 0) {
