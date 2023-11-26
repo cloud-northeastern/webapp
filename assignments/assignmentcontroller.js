@@ -83,10 +83,10 @@ module.exports = {
     submitAssignment: async (req, res) => {
      
      const { submission_url } = req.body;
-     logger.info('submission url',submission_url)  ; 
+     logger.info('Submission URL:', submission_url);
      //const userId=req.currentUser.id;
      
-     const assignment_id = req.params.assignment_id;
+     const assignmentId = req.params.assignmentId;
      logger.info('assignment_id' , assignment_id);
      
      stats.increment('post');
@@ -95,29 +95,20 @@ module.exports = {
         logger.warn(`400 Bad request`);
         return res.status(400).json({error: 'Body required for POST endpoint'});
     }
-        
+
+
 
         try {
             logger.info('Try start');
             const submission = await Submission.create({
-                assignment_id,
+                assignmentId,
                 submission_url,
             });
-            logger.info('1.submission url',submission_url);
-            logger.info('2.assignment_id' ,assignment_id);
-            logger.info('3.submission url',+submission_url);
-            logger.info('4.assignment_id' ,+assignment_id);
-
-            console.log("Assignment_id", assignment_id);
+//            console.log("Assignment_id", assignment_id);
             
-            logger.warn('5',+submission.id);
-            logger.warn('6',assignment_id);
-            logger.warn('7',+submission.submission_url);
-            logger.warn('8',submission.createdAt);
-            logger.warn('9',+submission.updatedAt);
             return res.status(201).json({
                 "id": submission.id,
-                "assignment_id": assignment_id,
+                "assignment_id": assignmentId,
                 "submission_url": submission.submission_url,
                 "submission_date": submission.createdAt,
                 "submission_updated": submission.updatedAt
