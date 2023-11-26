@@ -9,7 +9,7 @@ const Submission = sequelize.define('submission', {
         defaultValue: Sequelize.DataTypes.UUIDV4, 
         allowNull: false,
     },
-    assignment_id: {
+    assignmentId: {
         type: Sequelize.DataTypes.UUID,
         references: {
             model: Assignment,
@@ -24,6 +24,6 @@ const Submission = sequelize.define('submission', {
     timestamps: true
 });
 
-Submission.belongsTo(Assignment, { foreignKey: 'assignment_id' }); 
+Submission.belongsTo(Assignment, { foreignKey: 'assignmentId' }); 
 
 module.exports = Submission;
