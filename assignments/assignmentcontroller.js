@@ -86,14 +86,14 @@ module.exports = {
      logger.info('Submission URL:', submission_url);
      //const userId=req.currentUser.id;
      
-     const assignmentId = req.params.assignmentId;
-     logger.info('assignment_id' , assignment_id);
+     const assignment_id = req.params.assignmentId;
+     //logger.info('assignment_id' , assignment_id);
      
      stats.increment('post');
      if (!submission_url) {
         //stats.increment('bad_request');
         logger.warn(`400 Bad request`);
-        return res.status(400).json({error: 'Body required for POST endpoint'});
+        return res.status(400).json({error: 'Submission URL required'});
     }
 
 
@@ -101,14 +101,14 @@ module.exports = {
         try {
             logger.info('Try start');
             const submission = await Submission.create({
-                assignmentId,
+                //assignment_id,
                 submission_url,
             });
 //            console.log("Assignment_id", assignment_id);
             
             return res.status(201).json({
                 "id": submission.id,
-                "assignment_id": assignmentId,
+                //"assignment_id": assignment_id,
                 "submission_url": submission.submission_url,
                 "submission_date": submission.createdAt,
                 "submission_updated": submission.updatedAt
