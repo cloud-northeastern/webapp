@@ -5,6 +5,8 @@ const fs =require('fs')
 const User=require('./model/user')
 const bcrypt=require('bcryptjs')
 const Assignment=require('./model/assignment')
+const Submission = require('./model/submission');
+
 //entry points 
 
 //Database
@@ -81,6 +83,14 @@ Assignment.sync({ alter: true })
     })
     .catch((error) => {
         console.error('Error syncing Assignment model');
+    });
+
+Submission.sync({ alter: true })
+    .then(() => {
+        console.log('Submission model synced successfully!');
+    })
+    .catch((error) => {
+        console.error('Error syncing Submision model');
     });
 
 module.exports =app

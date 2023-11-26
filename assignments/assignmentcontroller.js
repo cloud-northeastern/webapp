@@ -99,10 +99,21 @@ module.exports = {
             const assignment_id = req.params.id;
             logger.info('assignment id ', assignment_id);
             const submission_url = req.body.submission_url;
+
+            let assignment = await Assignment.findOne({ where: { id: assignment_id } });
+            logger.info('Assignment');
+
+            const currentDate = new Date();
+            if(currentDate > assignment.deadline){
+                logger.info('Dealine exceed');
+                return res.status(403).json({error: 'Deadline exceed '});
+            }
+
             const submission = await Submission.create({
                 assignment_id,
                 submission_url,
             });
+
             logger.info('Submission created:', submission);
     
             return res.status(201).json({
