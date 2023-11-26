@@ -81,11 +81,14 @@ module.exports = {
     },
 
     submitAssignment: async (req, res) => {
-    const { submission_url } = req.body;
-     logger.info('submission url',submission_url)   
+     
+     const { submission_url } = req.body;
+     logger.info('submission url',submission_url)  ; 
      //const userId=req.currentUser.id;
+     
      const assignment_id = req.params.assignment_id;
-        logger.info('assignment_id' , assignment_id)
+     logger.info('assignment_id' , assignment_id);
+     
      stats.increment('post');
      if (!submission_url) {
         //stats.increment('bad_request');
@@ -95,20 +98,23 @@ module.exports = {
         
 
         try {
+            logger.info('Try start');
             const submission = await Submission.create({
                 assignment_id,
                 submission_url,
             });
-            logger.info('submission url',submission_url);
-            logger.info('assignment_id' ,assignment_id);
+            logger.info('1.submission url',submission_url);
+            logger.info('2.assignment_id' ,assignment_id);
+            logger.info('3.submission url',+submission_url);
+            logger.info('4.assignment_id' ,+assignment_id);
 
-            //console.log("Assignemnt_id", assignment_id);
+            console.log("Assignment_id", assignment_id);
             
-            logger.warn('',submission.id);
-            logger.warn('',assignment_id);
-            logger.warn('',submission.submission_url);
-            logger.warn('',submission.createdAt);
-            logger.warn('',submission.updatedAt);
+            logger.warn('5',+submission.id);
+            logger.warn('6',assignment_id);
+            logger.warn('7',+submission.submission_url);
+            logger.warn('8',submission.createdAt);
+            logger.warn('9',+submission.updatedAt);
             return res.status(201).json({
                 "id": submission.id,
                 "assignment_id": assignment_id,
