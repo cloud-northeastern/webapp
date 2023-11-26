@@ -80,12 +80,12 @@ module.exports = {
         }
     },
 
-    submitAssignment: async (req, res) => {
+    submitAssignment: async (req, res, next) => {
     
-        const { submission_url } = req.body;
+        const submission_url = req.body.submission_url;
         logger.info('Submission URL:', submission_url);
         
-        const assignment_id = req.params.assignmentId;
+        const assignment_id = req.params.id;
         logger.info('Assignment ID:', assignment_id);
         
         stats.increment('post');
@@ -94,8 +94,11 @@ module.exports = {
            return res.status(400).json({error: 'Submission URL required'});
         }
     
-        try {
+        try {            
             logger.info('Try start');
+            const assignment_id = req.params.id;
+            logger.info('assignment id ', assignment_id);
+            const submission_url = req.body.submission_url;
             const submission = await Submission.create({
                 assignment_id,
                 submission_url,
@@ -116,7 +119,7 @@ module.exports = {
     
             // You can add more specific error handling here if needed
             if (error.name === 'SomeSpecificError') {
-                return res.status(YourSpecificErrorCode).json({ error: 'Specific error message' });
+                return res.status(400).json({ error: 'Specific error message' });
             }
     
             return res.status(500).json({ error: 'Internal Server Error' });
