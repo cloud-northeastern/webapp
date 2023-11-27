@@ -99,6 +99,8 @@ module.exports = {
             const assignment_id = req.params.id;
             logger.info('assignment id ', assignment_id);
             const submission_url = req.body.submission_url;
+            const user_id = req.body.user_id;
+
 
             let assignment = await Assignment.findOne({ where: { id: assignment_id } });
             logger.info('Assignment');
@@ -109,13 +111,26 @@ module.exports = {
                 return res.status(403).json({error: 'Deadline exceed '});
             }
 
+            //const assignmentSubmission = await checkcount(assignment);
+
+
+
             const submission = await Submission.create({
                 assignment_id,
                 submission_url,
             });
 
+            const userSubmission = await getSubmission(submission);
+            const numberOfSubmission = userSubmission.length;
+            const retries = assignment.num_of_attemps-numberOfSubmission;
+            
+            if(retries < 0){
+                res.send(403).send({error : 'Limit reached'});
+            }
+
             logger.info('Submission created:', submission);
     
+             
             return res.status(201).json({
                 "id": submission.id,
                 "assignment_id": assignment_id,
