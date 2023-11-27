@@ -139,9 +139,9 @@ module.exports = {
             });
 
 
-            const submissionforUsers = await Assignment.findAll({ where: {  id: assignmentId, userId: userId} });
-            // const userSubmission = await getSubmission(submission);
-            logger.warn('length: ', submissionforUsers);
+             const submissionforUsers = await Submission.findAll({ where: {  assignmentId: assignmentId, userId: userId} });
+             //const userSubmission = await getSubmission(submission);
+             logger.warn('length: ', submissionforUsers);
              const numberOfSubmission = submissionforUsers.length;
              const retries = assignment.num_of_attemps-numberOfSubmission;
             
