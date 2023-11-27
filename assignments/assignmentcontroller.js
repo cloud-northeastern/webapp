@@ -80,29 +80,29 @@ module.exports = {
         }
     },
 
-    getSubmission : async(submission) =>{
+    // getSubmission : async(submission) =>{
 
-        try{
+    //     try{
 
-            const count = await Assignment.findAll({ 
-                where: { 
-                    user_id : submission.user_id,
-                    assignment_id: submission.assignment_id, 
-                },
-            });
-            return count;
-        }
-        catch(error){
-            throw error;
-        }
-    },
-    
-    submitAssignment: async (req, res, next) => {
+    //         const count = await Assignment.findAll({ 
+    //             where: { 
+    //                 user_id : submission.user_id,
+    //                 assignment_id: submission.assignment_id, 
+    //             },
+    //         });
+    //         return count;
+    //     }
+    //     catch(error){
+    //         throw error;
+    //     }
+    // },
+
+    submitAssignment: async (req, res) => {
     
         const submission_url = req.body.submission_url;
         logger.info('Submission URL:', submission_url);
         
-        const assignment_id = req.params.id;
+        const assignment_id = req.params.assignmentId;
         logger.info('Assignment ID:', assignment_id);
         
         stats.increment('post');
@@ -113,13 +113,13 @@ module.exports = {
     
         try {            
             logger.info('Try start');
-            const assignment_id = req.params.id;
+            const assignmentId = req.params.assignmentId;
             logger.info('assignment id ', assignment_id);
             const submission_url = req.body.submission_url;
             const user_id = req.body.user_id;
 
 
-            let assignment = await Assignment.findOne({ where: { id: assignment_id } });
+            let assignment = await Assignment.findOne({ where: { id: assignmentId } });
             logger.info('Assignment');
 
             const currentDate = new Date();
@@ -133,14 +133,17 @@ module.exports = {
 
 
             const submission = await Submission.create({
-                assignment_id,
+                assignmentId,
                 submission_url,
             });
 
-            const userSubmission = await getSubmission(submission);
-            const numberOfSubmission = userSubmission.length;
-            const retries = assignment.num_of_attemps-numberOfSubmission;
+
+            const submissionforUsers = await Assignment.findAll({ where: {  id: assignmentId,} });
+            // const userSubmission = await getSubmission(submission);
+             const numberOfSubmission = submissionforUsers.length;
+             const retries = assignment.num_of_attemps-numberOfSubmission;
             
+
             if(retries < 0){
                 res.send(403).send({error : 'Limit reached'});
             }
@@ -150,7 +153,7 @@ module.exports = {
              
             return res.status(201).json({
                 "id": submission.id,
-                "assignment_id": assignment_id,
+                "assignment_id": assignmentId,
                 "submission_url": submission.submission_url,
                 "submission_date": submission.createdAt,
                 "submission_updated": submission.updatedAt
