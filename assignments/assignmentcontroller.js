@@ -116,7 +116,7 @@ module.exports = {
             const assignmentId = req.params.assignmentId;
             logger.info('assignment id ', assignment_id);
             const submission_url = req.body.submission_url;
-            const user_id = req.body.user_id;
+            const userId = req.currentUser.id;
 
 
             let assignment = await Assignment.findOne({ where: { id: assignmentId } });
@@ -135,11 +135,13 @@ module.exports = {
             const submission = await Submission.create({
                 assignmentId,
                 submission_url,
+                userId,
             });
 
 
-            const submissionforUsers = await Assignment.findAll({ where: {  id: assignmentId,} });
+            const submissionforUsers = await Assignment.findAll({ where: {  id: assignmentId, userId: userId} });
             // const userSubmission = await getSubmission(submission);
+            logger.warn('length: ', submissionforUsers);
              const numberOfSubmission = submissionforUsers.length;
              const retries = assignment.num_of_attemps-numberOfSubmission;
             
