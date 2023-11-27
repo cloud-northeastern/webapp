@@ -80,6 +80,23 @@ module.exports = {
         }
     },
 
+    getSubmission : async(submission) =>{
+
+        try{
+
+            const count = await Assignment.findAll({ 
+                where: { 
+                    user_id : submission.user_id,
+                    assignment_id: submission.assignment_id, 
+                },
+            });
+            return count;
+        }
+        catch(error){
+            throw error;
+        }
+    },
+    
     submitAssignment: async (req, res, next) => {
     
         const submission_url = req.body.submission_url;
