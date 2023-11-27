@@ -10,6 +10,7 @@ const base64 = require('base-64');
 const logger = require('../logger'); 
 const StatsD = require('node-statsd');
 const stats = new StatsD();
+const AWS = require('aws-sdk');
 
   
 module.exports = {
@@ -147,12 +148,32 @@ module.exports = {
             
 
             if(retries < 0){
-                res.send(403).send({error : 'Limit reached'});
+                logger.warn('Limit reached');
+                return res.status(403).send({error : 'Limit reached'});
             }
 
             logger.info('Submission created:', submission);
     
-             
+//////////////////
+
+        const authHeader = req.headers.authorization;
+        const authHeaderParts = authHeader.split(' ');
+        const credentials = Buffer.from(authHeaderParts[1], 'base64').toString('utf-8').split(':');
+        const email = credentials[0];
+
+            AWS.config.update({ region: 'us-east-1' });
+            const sns = new AWS.SNS();
+            const params = {
+            Message: JSON.stringify({email: email, submissionUrl: submission.submission_url }),
+            TopicArn: process.env.SNS_TOPIC_ARN,
+            };
+
+            sns.publish(params, function(err, data) {
+            if (err) console.log(err, err.stack);
+            else console.log(`Message sent to SNS: ${data}`);
+            });
+///////////////////////
+
             return res.status(201).json({
                 "id": submission.id,
                 "assignment_id": assignmentId,
