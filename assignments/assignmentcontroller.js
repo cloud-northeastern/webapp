@@ -169,8 +169,8 @@ module.exports = {
             };
 
             sns.publish(params, function(err, data) {
-            if (err) console.log(err, err.stack);
-            else console.log(`Message sent to SNS: ${data}`);
+            if (err) logger.warn(err, err.stack);
+            else logger.info(`Message sent to SNS: ${data}`);
             });
 ///////////////////////
 
