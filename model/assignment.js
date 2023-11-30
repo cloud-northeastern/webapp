@@ -32,7 +32,7 @@ const Assignment = sequelize.define('assignment', {
         allowNull: false,
         validate: {
             min: 1,
-            max: 3
+            max: 100
         }
     },
     deadline: {
