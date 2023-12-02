@@ -78,7 +78,7 @@ User.sync({alter:true}).then((data)=> {
   });
 
 Assignment.sync({ alter: true })
-    .then(() => {
+    .then((data) => {
         console.log('Assignment model synced successfully!');
     })
     .catch((error) => {
@@ -86,7 +86,7 @@ Assignment.sync({ alter: true })
     });
 
 Submission.sync({ alter: true })
-    .then(() => {
+    .then((data) => {
         console.log('Submission model synced successfully!');
     })
     .catch((error) => {
