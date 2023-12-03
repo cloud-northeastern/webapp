@@ -65,6 +65,8 @@ sudo systemctl restart webapp.service
 
 sudo systemctl restart webapp.service
 
+sudo systemctl restart webapp.service
+
 sudo systemctl status webapp.service
 
 sudo echo $?
