@@ -75,7 +75,8 @@ module.exports = {
                 "updatedAt": assignment.updatedAt
             });
         } catch (error) {
-            // Handling  other errors 
+            // Handling  other errors
+            logger.warn("Error creating assignment",error); 
             console.error('Error creating assignment:', error);
             return res.status(500).json({ error: 'Internal Server Error' });
         }
