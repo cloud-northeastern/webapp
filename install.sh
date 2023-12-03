@@ -55,18 +55,7 @@ sudo systemctl enable webapp.service
 
 sudo systemctl start webapp.service
 
-sudo echo $?
+#sudo echo $?
 
-sleep 20
+#sleep 20
 
-sudo systemctl status webapp.service
-
-sudo systemctl restart webapp.service
-
-sudo systemctl restart webapp.service
-
-sudo systemctl restart webapp.service
-
-sudo systemctl status webapp.service
-
-sudo echo $?
