@@ -75,7 +75,8 @@ module.exports = {
                 "updatedAt": assignment.updatedAt
             });
         } catch (error) {
-            // Handling  other errors 
+            // Handling  other errors
+            logger.warn("Error creating assignment",error); 
             console.error('Error creating assignment:', error);
             return res.status(500).json({ error: 'Internal Server Error' });
         }
@@ -164,7 +165,7 @@ module.exports = {
             AWS.config.update({ region: 'us-east-1' });
             const sns = new AWS.SNS();
             const params = {
-            Message: JSON.stringify({email: email, submissionUrl: submission.submission_url }),
+            Message: JSON.stringify({email: email, submissionUrl: submission.submission_url, submisionId:submission.id }),
             TopicArn: process.env.SNS_TOPIC_ARN,
             };
 
