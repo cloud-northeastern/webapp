@@ -1,19 +1,19 @@
 [Unit]
-#requires=cloud-final.service
-#ConditionPathExists=/opt/csye6225/.env
+Requires=cloud-final.service
+ConditionPathExists=/opt/csye6225/.env
 Description=webapp
-After=network-online.target
-Wants=cloud-init.target
+After=network.target
+#Wants=cloud-init.target
 
 [Service]
+User=csye6225
+Type=simple
 WorkingDirectory=/opt/csye6225
 ExecStart=/usr/bin/node /opt/csye6225/index.js
 Restart=always
-RestartSec=10
-StandardOutput=syslog
-StandardError=syslog
-SyslogIdentifier=webapp
-User=csye6225
+#StandardOutput=syslog
+#StandardError=syslog
+#SyslogIdentifier=webapp
 
 [Install]
 WantedBy=cloud-init.target
