@@ -90,6 +90,11 @@ build {
     script = "./install.sh"
   }
 
+  post-processor "manifest" {
+    output = "./manifest.json"
+    strip_path = true
+  }
+
   provisioner "shell" {
     inline = [
       "wget https://s3.amazonaws.com/amazoncloudwatch-agent/debian/amd64/latest/amazon-cloudwatch-agent.deb",
