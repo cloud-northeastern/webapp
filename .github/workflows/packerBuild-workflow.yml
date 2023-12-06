@@ -57,8 +57,6 @@ jobs:
             AMI_ID=$(jq -r '.builds[-1].artifact_id' manifest.json | cut -d ":" -f2)
             echo $AMI_ID
             LT_ID=$(aws ec2 describe-launch-templates --launch-template-name launch_template)
-  #            LT_ID="${LT_ID%\"}"
-  #         LT_ID="${LT_ID#\"}"
             echo $LT_ID
             aws ec2 create-launch-template-version --launch-template-id $LT_ID --version-description WebVersion2 --source-version 1 --launch-template-data "ImageId=$AMI_ID"
             aws autoscaling update-auto-scaling-group --auto-scaling-group-name asg_launch_config --launch-template LaunchTemplateId=$LT_ID,Version='$Latest'
