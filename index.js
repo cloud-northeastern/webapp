@@ -20,7 +20,7 @@ const { Model } = require('sequelize');
 
 app.use(express.json());
 
-app.use('/v20/assignments',assignmentRouter);
+app.use('/v2/assignments',assignmentRouter);
 app.use('/healthz',healthRouter);
 
 const PORT = process.env.PORT || process.env.APP_PORT;

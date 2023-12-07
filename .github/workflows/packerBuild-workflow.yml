@@ -76,7 +76,7 @@ jobs:
             aws autoscaling update-auto-scaling-group --auto-scaling-group-name asg_launch_config --launch-template LaunchTemplateId=$LT_ID,Version='$Latest'
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID_DEMO }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY_DEMO }
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY_DEMO }}
           
       - name: Refreshing Instances
         run: aws autoscaling start-instance-refresh --auto-scaling-group-name asg_launch_config
