@@ -63,15 +63,15 @@ jobs:
             aws ec2 create-launch-template-version --launch-template-id $LT_ID --version-description WebVersion2 --source-version 1 --launch-template-data "ImageId=$AMI_ID"
             aws autoscaling update-auto-scaling-group --auto-scaling-group-name asg_launch_config --launch-template LaunchTemplateId=$LT_ID,Version='$Latest'
         env:
-          AWS_ACCESS_KEY_ID_DEMO: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY_DEMO: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_ACCESS_KEY_ID_DEMO: ${{ secrets.AWS_ACCESS_KEY_ID_DEMO }}
+          AWS_SECRET_ACCESS_KEY_DEMO: ${{ secrets.AWS_SECRET_ACCESS_KEY_DEMO }}
       
           
       - name: Refreshing Instances
         run: aws autoscaling start-instance-refresh --auto-scaling-group-name asg_launch_config
         env:
-          AWS_ACCESS_KEY_ID_DEMO: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY_DEMO: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_ACCESS_KEY_ID_DEMO: ${{ secrets.AWS_ACCESS_KEY_ID_DEMO }}
+          AWS_SECRET_ACCESS_KEY_DEMO: ${{ secrets.AWS_SECRET_ACCESS_KEY_DEMO }}
       
       
       - name: Wait for Instance Refresh to complete
@@ -111,6 +111,6 @@ jobs:
             fi
         shell: bash
         env:
-          AWS_ACCESS_KEY_ID_DEMO: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY_DEMO: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_ACCESS_KEY_ID_DEMO: ${{ secrets.AWS_ACCESS_KEY_ID_DEMO }}
+          AWS_SECRET_ACCESS_KEY_DEMO: ${{ secrets.AWS_SECRET_ACCESS_KEY_DEMO }}
 
