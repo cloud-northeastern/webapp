@@ -12,9 +12,9 @@ jobs:
       postgres:
         image: 'postgres:latest'
         env:
-          POSTGRES_DB: ${{secrets.POSTGRES_DB}}
-          POSTGRES_USER: ${{secrets.POSTGRES_USER}}
-          POSTGRES_PASSWORD: ${{secrets.POSTGRES_PASSWORD}}
+          POSTGRES_DB: ${{secrets.DB_POSTGRES}}
+          POSTGRES_USER: ${{secrets.DB_USER}}
+          POSTGRES_PASSWORD: ${{secrets.DB_PASSWORD}}
           POSTGRES_PORT: '5432'
           POSTGRES_HOST: 'localhost'
           DB_DIALECT: 'postgres'
