@@ -1,0 +1,55 @@
+name: Node.js CI
+
+on:
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    name: check_ci
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: 'postgres:latest'
+        env:
+          POSTGRES_DB: ${{secrets.POSTGRES_DB}}
+          POSTGRES_USER: ${{secrets.POSTGRES_USER}}
+          POSTGRES_PASSWORD: ${{secrets.POSTGRES_PASSWORD}}
+          POSTGRES_PORT: '5432'
+          POSTGRES_HOST: 'localhost'
+          DB_DIALECT: 'postgres'
+        ports:
+          - '5432:5432'
+        options: >-
+          --health-cmd pg_isready --health-interval 10s --health-timeout 5s
+          --health-retries 5
+    steps:
+    - uses: actions/checkout@v3
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+    - name: Build and Test
+      run: |
+            npm install
+            npm ci
+            npm run build --if-present
+            npm test
+    - name: Setup `packer`
+      uses: hashicorp/setup-packer@main
+      id: setup-packer
+      with:
+        packer_version: "1.7.4"
+
+    - name: Run `packer init`
+      id: init
+      run: "packer init ./packer/aws-ubuntu.pkr.hcl"
+
+    - name: Run `packer fmt`
+      id: fmt
+      run: "packer fmt ./packer/aws-ubuntu.pkr.hcl"
+      
+    - name: Run `packer validate`
+      id: validate
+      run: "packer validate ./packer/aws-ubuntu.pkr.hcl"

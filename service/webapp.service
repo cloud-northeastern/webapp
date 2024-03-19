@@ -1,0 +1,16 @@
+[Unit]
+Description=app
+ConditionPathExists=/home/admin/webapp/
+After=cloud-init.target
+
+[Service]
+Type=simple
+User=user
+Group=group
+WorkingDirectory=/home/admin/webapp/
+ExecStart=/usr/bin/node /home/admin/webapp/server.js
+StandardOutput=append:/var/log/webapp.log
+StandardError=append:/var/log/webapp-error.log
+
+[Install]
+WantedBy=cloud-init.target
